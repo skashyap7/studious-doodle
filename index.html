@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML · AI Agents · LLMs — Learning Curriculum</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0d0f12;
+    --bg2: #13161b;
+    --bg3: #1a1e25;
+    --border: #2a2f3a;
+    --border2: #353c4a;
+    --text: #e8eaf0;
+    --muted: #7a8299;
+    --dim: #4a5168;
+    --accent-purple: #8b7cf8;
+    --accent-teal: #3ecfb2;
+    --accent-amber: #f5a623;
+    --accent-coral: #f06a6a;
+    --accent-green: #5ec98a;
+    --phase1: #8b7cf8;
+    --phase2: #7baff8;
+    --phase3: #3ecfb2;
+    --phase4: #f5a623;
+    --phase5: #f06a6a;
+    --phase6: #5ec98a;
+    --tag-theory: #1e2540;
+    --tag-theory-text: #8b7cf8;
+    --tag-hands: #1e2a1e;
+    --tag-hands-text: #5ec98a;
+    --tag-proj: #2a1e10;
+    --tag-proj-text: #f5a623;
+    --radius: 8px;
+    --font: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ─── Layout ─── */
+  .shell { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* ─── Header ─── */
+  .hero { margin-bottom: 48px; border-bottom: 1px solid var(--border); padding-bottom: 36px; }
+  .hero-eyebrow { font-family: var(--mono); font-size: 11px; color: var(--accent-teal); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
+  .hero h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 16px; }
+  .hero h1 span { color: var(--accent-purple); }
+  .hero-sub { color: var(--muted); font-size: 15px; max-width: 560px; margin-bottom: 24px; }
+
+  .hero-stats { display: flex; gap: 28px; flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-val { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--text); }
+  .stat-lbl { font-size: 12px; color: var(--muted); }
+
+  /* ─── Progress overview ─── */
+  .overview { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 36px; }
+  .ov-title { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; }
+  .ov-phases { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 14px; }
+  .ov-phase { display: flex; flex-direction: column; gap: 4px; }
+  .ov-bar-track { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .ov-bar-fill { height: 100%; border-radius: 2px; width: 0%; transition: width 0.4s ease; }
+  .ov-bar-label { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .ov-total { display: flex; align-items: center; gap: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .ov-total-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .ov-total-fill { height: 100%; background: linear-gradient(90deg, var(--accent-purple), var(--accent-teal)); border-radius: 3px; transition: width 0.4s ease; }
+  .ov-pct { font-family: var(--mono); font-size: 13px; color: var(--text); min-width: 36px; text-align: right; }
+
+  /* ─── Phase ─── */
+  .phase { margin-bottom: 12px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .phase-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px; cursor: pointer;
+    background: var(--bg2); transition: background 0.15s;
+    user-select: none;
+  }
+  .phase-header:hover { background: var(--bg3); }
+  .phase-pip { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .phase-info { flex: 1; }
+  .phase-name { font-size: 14px; font-weight: 500; color: var(--text); }
+  .phase-meta { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .phase-prog { font-family: var(--mono); font-size: 11px; color: var(--muted); min-width: 52px; text-align: right; }
+  .phase-chevron { color: var(--dim); font-size: 13px; transition: transform 0.2s; }
+  .phase-chevron.open { transform: rotate(90deg); }
+  .phase-body { display: none; }
+  .phase-body.open { display: block; }
+
+  /* ─── Week ─── */
+  .week { border-top: 1px solid var(--border); }
+  .week-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 18px; cursor: pointer; background: var(--bg);
+    transition: background 0.15s;
+  }
+  .week-header:hover { background: var(--bg2); }
+  .week-num { font-family: var(--mono); font-size: 11px; color: var(--dim); min-width: 52px; }
+  .week-title { flex: 1; font-size: 14px; color: var(--text); }
+  .week-check {
+    width: 20px; height: 20px; border-radius: 4px;
+    border: 1.5px solid var(--border2); background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0; transition: all 0.15s;
+    color: transparent; font-size: 12px;
+  }
+  .week-check.done { background: var(--accent-teal); border-color: var(--accent-teal); color: #0d0f12; }
+  .week-chevron { color: var(--dim); font-size: 11px; transition: transform 0.2s; }
+  .week-chevron.open { transform: rotate(90deg); }
+  .week-body { display: none; padding: 0 18px 18px 82px; }
+  .week-body.open { display: block; }
+
+  /* ─── Week content ─── */
+  .section-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin: 14px 0 8px; }
+
+  .topics { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+  .topic { font-size: 13px; padding: 3px 10px; border-radius: 4px; }
+  .topic.theory { background: var(--tag-theory); color: var(--tag-theory-text); }
+  .topic.hands-on { background: var(--tag-hands); color: var(--tag-hands-text); }
+  .topic.project { background: var(--tag-proj); color: var(--tag-proj-text); }
+
+  .resource-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .resource-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .resource-list li::before { content: "→"; color: var(--dim); flex-shrink: 0; margin-top: 1px; }
+  .resource-list a { color: var(--accent-teal); text-decoration: none; }
+  .resource-list a:hover { text-decoration: underline; }
+  .res-type { font-family: var(--mono); font-size: 10px; padding: 1px 6px; border-radius: 3px; flex-shrink: 0; margin-top: 2px; }
+  .res-type.course { background: #1a2035; color: #7baff8; }
+  .res-type.paper { background: #1e1420; color: #c084fc; }
+  .res-type.video { background: #1e1010; color: #f87171; }
+  .res-type.docs { background: #101e1a; color: #3ecfb2; }
+  .res-type.book { background: #1e1a10; color: #f5a623; }
+
+  .assessment-box { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius); padding: 14px 16px; margin-top: 14px; }
+  .assessment-box .section-label { margin-top: 0; }
+  .criteria { display: flex; flex-direction: column; gap: 6px; }
+  .criterion { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--muted); }
+  .criterion-check {
+    width: 16px; height: 16px; border-radius: 3px; border: 1.5px solid var(--border2);
+    flex-shrink: 0; margin-top: 2px; cursor: pointer; transition: all 0.15s;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; color: transparent;
+  }
+  .criterion-check.done { background: var(--accent-purple); border-color: var(--accent-purple); color: #fff; }
+
+  .milestone-banner { background: linear-gradient(135deg, #1e2a10, #2a1e10); border: 1px solid #3a3020; border-radius: var(--radius); padding: 12px 16px; margin-top: 14px; display: flex; gap: 12px; align-items: flex-start; }
+  .milestone-icon { font-size: 18px; flex-shrink: 0; }
+  .milestone-text { flex: 1; }
+  .milestone-title { font-size: 13px; font-weight: 500; color: var(--accent-amber); margin-bottom: 2px; }
+  .milestone-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* ─── Legend ─── */
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; padding: 14px 18px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ─── Footer ─── */
+  footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--dim); font-family: var(--mono); font-size: 12px; display: flex; justify-content: space-between; flex-wrap: gap; gap: 12px; }
+
+  @media (max-width: 600px) {
+    .ov-phases { grid-template-columns: repeat(3, 1fr); }
+    .week-body { padding-left: 18px; }
+    .hero-stats { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-eyebrow">Learning curriculum · Developers new to AI</div>
+    <h1>ML · AI Agents<br><span>&amp; LLMs</span></h1>
+    <p class="hero-sub">A structured 26-week programme covering machine learning foundations, deep learning, transformers, LLM engineering, autonomous agents, and production deployment.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-val">26</span><span class="stat-lbl">Weeks</span></div>
+      <div class="stat"><span class="stat-val">6</span><span class="stat-lbl">Phases</span></div>
+      <div class="stat"><span class="stat-val">6</span><span class="stat-lbl">Projects</span></div>
+      <div class="stat"><span class="stat-val" id="completed-count">0</span><span class="stat-lbl">Weeks completed</span></div>
+    </div>
+  </header>
+
+  <!-- Progress overview -->
+  <div class="overview">
+    <div class="ov-title">Progress overview</div>
+    <div class="ov-phases" id="ov-phases"></div>
+    <div class="ov-total">
+      <div class="ov-total-bar"><div class="ov-total-fill" id="total-fill" style="width:0%"></div></div>
+      <div class="ov-pct" id="total-pct">0%</div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--tag-theory-text)"></div>Theory</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--tag-hands-text)"></div>Hands-on</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--tag-proj-text)"></div>Project</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent-teal)"></div>Week complete</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent-amber)"></div>Milestone</div>
+  </div>
+
+  <!-- Phases -->
+  <div id="curriculum"></div>
+
+  <footer>
+    <span>ML · AI Agents · LLMs curriculum</span>
+    <span>Progress saved in localStorage</span>
+  </footer>
+
+</div>
+
+<script>
+const CURRICULUM = [
+  {
+    id: "p1", color: "var(--phase1)", name: "Phase 1 — ML foundations", weeks: "Weeks 1–4",
+    weeks_data: [
+      {
+        id: "w1", title: "Math & statistics for ML",
+        topics: [{l:"Linear algebra: vectors, matrices, dot products",t:"theory"},{l:"Probability: distributions, Bayes' theorem",t:"theory"},{l:"Calculus: partial derivatives, chain rule",t:"theory"},{l:"NumPy fundamentals",t:"hands-on"}],
+        resources: [
+          {type:"course", text:"3Blue1Brown — Essence of Linear Algebra", url:"https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"},
+          {type:"course", text:"3Blue1Brown — Essence of Calculus", url:"https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr"},
+          {type:"book", text:"Mathematics for Machine Learning (Deisenroth) — free PDF", url:"https://mml-book.github.io/"},
+          {type:"video", text:"StatQuest — Probability & Statistics playlist", url:"https://www.youtube.com/c/joshstarmer"},
+          {type:"docs", text:"NumPy quickstart tutorial", url:"https://numpy.org/doc/stable/user/quickstart.html"},
+        ],
+        assessment: [
+          "Can multiply matrices by hand and explain what the result means geometrically",
+          "Understands gradient as 'direction of steepest ascent' — can explain to a colleague",
+          "Writes NumPy vectorised operations without loops for a given problem",
+          "Implements gradient descent on a simple quadratic function from scratch",
+        ]
+      },
+      {
+        id: "w2", title: "Supervised learning fundamentals",
+        topics: [{l:"Linear & logistic regression",t:"theory"},{l:"Loss functions & gradient descent",t:"theory"},{l:"Overfitting, regularisation (L1/L2)",t:"theory"},{l:"Implement regression from scratch",t:"hands-on"}],
+        resources: [
+          {type:"course", text:"Andrew Ng — Machine Learning Specialization (Coursera)", url:"https://www.coursera.org/specializations/machine-learning-introduction"},
+          {type:"video", text:"StatQuest — Logistic Regression clearly explained", url:"https://www.youtube.com/watch?v=yIYKR4sgzI8"},
+          {type:"video", text:"Andrej Karpathy — micrograd walkthrough", url:"https://www.youtube.com/watch?v=VMj-3S1tku0"},
+          {type:"docs", text:"Scikit-learn: supervised learning user guide", url:"https://scikit-learn.org/stable/supervised_learning.html"},
+        ],
+        assessment: [
+          "Derives the gradient of MSE loss and implements a gradient descent loop",
+          "Explains overfitting visually using a train/val loss plot",
+          "Implements L2 regularisation and shows its effect on weights",
+          "Achieves >85% accuracy on a binary classification task with logistic regression",
+        ]
+      },
+      {
+        id: "w3", title: "Model evaluation & scikit-learn",
+        topics: [{l:"Train/val/test splits, cross-validation",t:"theory"},{l:"Classification metrics: precision, recall, F1, ROC-AUC",t:"theory"},{l:"Decision trees, random forests, SVMs",t:"theory"},{l:"Scikit-learn pipelines end-to-end",t:"hands-on"}],
+        resources: [
+          {type:"course", text:"Kaggle — Intro to Machine Learning (free)", url:"https://www.kaggle.com/learn/intro-to-machine-learning"},
+          {type:"video", text:"StatQuest — ROC and AUC clearly explained", url:"https://www.youtube.com/watch?v=4jRBRDbJemM"},
+          {type:"video", text:"Sentdex — scikit-learn series", url:"https://www.youtube.com/playlist?list=PLQVvvaa0QuDd0flgGphKCej-9jp-QdzZ3"},
+          {type:"docs", text:"Scikit-learn Pipeline documentation", url:"https://scikit-learn.org/stable/modules/compose.html"},
+        ],
+        assessment: [
+          "Constructs a full scikit-learn Pipeline with preprocessing + model",
+          "Interprets a confusion matrix and explains precision/recall trade-off for a business case",
+          "Tunes a random forest with GridSearchCV and reports correct held-out metrics",
+          "Identifies data leakage in a provided code example",
+        ]
+      },
+      {
+        id: "w4", title: "Milestone: end-to-end ML pipeline",
+        topics: [{l:"Feature engineering & selection",t:"theory"},{l:"Model selection & comparison",t:"hands-on"},{l:"REST API deployment with FastAPI",t:"hands-on"},{l:"PROJECT: tabular dataset → deployed API",t:"project"}],
+        resources: [
+          {type:"docs", text:"FastAPI official tutorial", url:"https://fastapi.tiangolo.com/tutorial/"},
+          {type:"course", text:"Kaggle — Feature Engineering (free)", url:"https://www.kaggle.com/learn/feature-engineering"},
+          {type:"video", text:"Patrick Loeber — Deploy ML models with FastAPI", url:"https://www.youtube.com/watch?v=h5wLuVDr0oc"},
+          {type:"book", text:"Hands-On ML with Scikit-Learn, Keras & TF — Ch 1–3", url:"https://www.oreilly.com/library/view/hands-on-machine-learning/9781492032632/"},
+        ],
+        assessment: [
+          "Delivers a working FastAPI endpoint that accepts input JSON and returns a prediction",
+          "Documents model card: training data, metrics, limitations, intended use",
+          "Compares at least 3 model types on the same dataset with fair evaluation",
+          "Code is in a GitHub repo with a README explaining how to reproduce results",
+        ],
+        milestone: { title: "Milestone: deployed ML model", desc: "Choose a tabular dataset (e.g. Titanic, House Prices, or your own). Build a complete pipeline: EDA → feature engineering → model selection → evaluation → FastAPI endpoint. Push to GitHub." }
+      },
+    ]
+  },
+  {
+    id: "p2", color: "var(--phase2)", name: "Phase 2 — Deep learning", weeks: "Weeks 5–8",
+    weeks_data: [
+      {
+        id: "w5", title: "Neural network fundamentals",
+        topics: [{l:"Perceptrons, activation functions",t:"theory"},{l:"Forward pass & backpropagation derivation",t:"theory"},{l:"Vanishing/exploding gradients",t:"theory"},{l:"Build a 2-layer net with NumPy",t:"hands-on"}],
+        resources: [
+          {type:"video", text:"3Blue1Brown — Neural Networks series", url:"https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi"},
+          {type:"video", text:"Andrej Karpathy — micrograd (backprop from scratch)", url:"https://www.youtube.com/watch?v=VMj-3S1tku0"},
+          {type:"paper", text:"LeCun et al. — Gradient-Based Learning (1998)", url:"http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf"},
+          {type:"book", text:"Deep Learning (Goodfellow) — free online, Ch 6–8", url:"https://www.deeplearningbook.org/"},
+        ],
+        assessment: [
+          "Derives backpropagation step for a 2-layer network on paper",
+          "Explains why ReLU solves the vanishing gradient problem better than sigmoid",
+          "Implements forward + backward pass in NumPy and trains on XOR",
+          "Plots training loss curves and diagnoses underfitting vs overfitting",
+        ]
+      },
+      {
+        id: "w6", title: "PyTorch fundamentals",
+        topics: [{l:"Tensors, autograd, computation graphs",t:"theory"},{l:"Datasets, DataLoaders, transforms",t:"hands-on"},{l:"Training loop, optimizer, scheduler",t:"hands-on"},{l:"GPU training basics",t:"hands-on"}],
+        resources: [
+          {type:"course", text:"PyTorch — official 60-minute blitz", url:"https://pytorch.org/tutorials/beginner/deep_learning_60min_blitz.html"},
+          {type:"video", text:"Andrej Karpathy — makemore series (language model from scratch)", url:"https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ"},
+          {type:"course", text:"fast.ai — Practical Deep Learning for Coders (free)", url:"https://course.fast.ai/"},
+          {type:"docs", text:"PyTorch tutorials index", url:"https://pytorch.org/tutorials/"},
+        ],
+        assessment: [
+          "Builds a custom Dataset class and DataLoader for a new dataset",
+          "Implements a training loop with validation, LR scheduler, and checkpoint saving",
+          "Explains what `.backward()` and `.zero_grad()` do and why both are needed",
+          "Trains a model on GPU and confirms speed-up vs CPU",
+        ]
+      },
+      {
+        id: "w7", title: "CNNs & transfer learning",
+        topics: [{l:"Convolution, pooling, receptive field",t:"theory"},{l:"ResNet, VGG architecture intuition",t:"theory"},{l:"Transfer learning & fine-tuning",t:"hands-on"},{l:"Image classification project",t:"hands-on"}],
+        resources: [
+          {type:"video", text:"CS231n Lecture 5 — CNNs (Stanford, free)", url:"https://www.youtube.com/watch?v=bNb2fEVKeEo"},
+          {type:"paper", text:"He et al. — Deep Residual Learning (ResNet, 2015)", url:"https://arxiv.org/abs/1512.03385"},
+          {type:"video", text:"Aladdin Persson — PyTorch transfer learning tutorial", url:"https://www.youtube.com/watch?v=qaDe0qQZ5AQ"},
+          {type:"course", text:"Kaggle — Computer Vision (free)", url:"https://www.kaggle.com/learn/computer-vision"},
+        ],
+        assessment: [
+          "Explains why deeper CNNs struggled before ResNet and how skip connections fix it",
+          "Fine-tunes a pretrained ResNet on a custom image dataset with >90% accuracy",
+          "Visualises first-layer filters and explains what they learn to detect",
+          "Compares training from scratch vs transfer learning on a small dataset",
+        ]
+      },
+      {
+        id: "w8", title: "Milestone: image classifier app",
+        topics: [{l:"RNNs, LSTMs, sequence modelling",t:"theory"},{l:"Batch norm, dropout patterns",t:"theory"},{l:"PROJECT: image classifier with Gradio UI",t:"project"}],
+        resources: [
+          {type:"video", text:"Andrej Karpathy — RNN effectiveness blog post", url:"http://karpathy.github.io/2015/05/21/rnn-effectiveness/"},
+          {type:"paper", text:"Hochreiter & Schmidhuber — LSTM (1997)", url:"https://www.bioinf.jku.at/publications/older/2604.pdf"},
+          {type:"docs", text:"Gradio — quickstart", url:"https://www.gradio.app/guides/quickstart"},
+          {type:"video", text:"Nicholas Renotte — Build an image classifier + deploy", url:"https://www.youtube.com/watch?v=jztwpsIzEGc"},
+        ],
+        assessment: [
+          "Delivers a public Gradio/Hugging Face Spaces demo of the image classifier",
+          "Model card includes dataset description, test accuracy, confusion matrix, failure analysis",
+          "Code is clean, modular, and reproducible from a GitHub repo",
+          "Can explain each architectural decision (why this backbone, why these augmentations)",
+        ],
+        milestone: { title: "Milestone: image classifier demo", desc: "Fine-tune a pretrained ResNet/EfficientNet on a dataset of your choice (custom or Kaggle). Wrap in a Gradio demo and deploy to Hugging Face Spaces. Write a model card." }
+      },
+    ]
+  },
+  {
+    id: "p3", color: "var(--phase3)", name: "Phase 3 — Transformers & LLMs", weeks: "Weeks 9–14",
+    weeks_data: [
+      {
+        id: "w9", title: "Attention & transformer architecture",
+        topics: [{l:"Self-attention, scaled dot-product attention",t:"theory"},{l:"Multi-head attention, positional encoding",t:"theory"},{l:"Encoder/decoder architecture",t:"theory"},{l:"Read & annotate the original paper",t:"hands-on"}],
+        resources: [
+          {type:"paper", text:"Vaswani et al. — Attention Is All You Need (2017)", url:"https://arxiv.org/abs/1706.03762"},
+          {type:"video", text:"3Blue1Brown — Attention in transformers (series)", url:"https://www.youtube.com/watch?v=eMlx5fFNoYc"},
+          {type:"video", text:"Andrej Karpathy — Let's build GPT from scratch", url:"https://www.youtube.com/watch?v=kCc8FmEb1nY"},
+          {type:"video", text:"Yannic Kilcher — Attention is All You Need (paper walkthrough)", url:"https://www.youtube.com/watch?v=iDulhoQ2pro"},
+        ],
+        assessment: [
+          "Implements scaled dot-product attention from scratch in PyTorch (no nn.MultiheadAttention)",
+          "Explains why queries, keys, and values play different roles in the mechanism",
+          "Describes what positional encoding solves and two approaches (sinusoidal vs learned)",
+          "Can draw the transformer encoder block from memory with correct data shapes",
+        ]
+      },
+      {
+        id: "w10", title: "Tokenisation, embeddings & context windows",
+        topics: [{l:"BPE, WordPiece, SentencePiece",t:"theory"},{l:"Token embeddings vs positional embeddings",t:"theory"},{l:"Context window limits & chunking strategies",t:"theory"},{l:"Explore tokenisers with tiktoken",t:"hands-on"}],
+        resources: [
+          {type:"video", text:"Andrej Karpathy — Let's build the GPT tokenizer", url:"https://www.youtube.com/watch?v=zduSFxRajkE"},
+          {type:"docs", text:"OpenAI tiktoken library", url:"https://github.com/openai/tiktoken"},
+          {type:"paper", text:"Sennrich et al. — BPE for NMT (2016)", url:"https://arxiv.org/abs/1508.07909"},
+          {type:"video", text:"HuggingFace — Tokenizers course (free)", url:"https://huggingface.co/learn/nlp-course/chapter2/4"},
+        ],
+        assessment: [
+          "Explains BPE training algorithm step-by-step and implements a toy version",
+          "Measures token count for various inputs and plans chunking for a 100-page PDF",
+          "Compares tokenisation of code vs natural language and explains differences",
+          "Builds a token counter utility for a given model and context budget",
+        ]
+      },
+      {
+        id: "w11", title: "LLM APIs & prompt engineering",
+        topics: [{l:"OpenAI/Anthropic API: chat, system prompts, tools",t:"hands-on"},{l:"Prompt engineering patterns",t:"theory"},{l:"Temperature, top-p, stop sequences",t:"theory"},{l:"Function/tool calling",t:"hands-on"}],
+        resources: [
+          {type:"docs", text:"Anthropic — Prompt engineering guide", url:"https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview"},
+          {type:"docs", text:"OpenAI — Prompt engineering guide", url:"https://platform.openai.com/docs/guides/prompt-engineering"},
+          {type:"video", text:"Andrew Ng — ChatGPT Prompt Engineering for Developers (free)", url:"https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/"},
+          {type:"course", text:"Anthropic courses on Deeplearning.ai (free)", url:"https://www.deeplearning.ai/courses/?courses_date_desc%5BrefinementList%5D%5Bpartner%5D%5B0%5D=Anthropic"},
+        ],
+        assessment: [
+          "Demonstrates 5 prompt patterns (zero-shot, few-shot, chain-of-thought, role, structured output) with examples",
+          "Builds a tool-use pipeline where the LLM calls at least 2 different tools",
+          "Tunes temperature/top-p and explains the quality-diversity trade-off with examples",
+          "Documents a prompt library for a domain of their choice",
+        ]
+      },
+      {
+        id: "w12", title: "Fine-tuning & LoRA / QLoRA",
+        topics: [{l:"When to fine-tune vs prompt-engineer",t:"theory"},{l:"Instruction tuning & RLHF overview",t:"theory"},{l:"LoRA & QLoRA with HuggingFace PEFT",t:"hands-on"},{l:"Fine-tune a small LLM on a custom task",t:"hands-on"}],
+        resources: [
+          {type:"paper", text:"Hu et al. — LoRA: Low-Rank Adaptation (2021)", url:"https://arxiv.org/abs/2106.09685"},
+          {type:"video", text:"Sebastian Raschka — Finetuning LLMs (YouTube series)", url:"https://www.youtube.com/watch?v=iERxSOwImgc"},
+          {type:"course", text:"HuggingFace — Fine-tuning course (free)", url:"https://huggingface.co/learn/nlp-course/chapter3/1"},
+          {type:"docs", text:"HuggingFace PEFT docs", url:"https://huggingface.co/docs/peft/index"},
+          {type:"paper", text:"Dettmers et al. — QLoRA (2023)", url:"https://arxiv.org/abs/2305.14314"},
+        ],
+        assessment: [
+          "Fine-tunes a model (e.g. Llama/Mistral 7B with QLoRA) on a custom instruction dataset",
+          "Compares base model vs fine-tuned model on a structured eval set",
+          "Explains the parameter efficiency argument: why LoRA works and what rank controls",
+          "Pushes fine-tuned adapter to Hugging Face Hub",
+        ]
+      },
+      {
+        id: "w13", title: "RAG — retrieval-augmented generation",
+        topics: [{l:"Embedding models & similarity search",t:"theory"},{l:"Vector DBs: Chroma, Pinecone, pgvector",t:"hands-on"},{l:"Chunking strategies & document loaders",t:"theory"},{l:"Re-ranking, hybrid search",t:"theory"}],
+        resources: [
+          {type:"paper", text:"Lewis et al. — RAG paper (2020)", url:"https://arxiv.org/abs/2005.11401"},
+          {type:"course", text:"DeepLearning.ai — Building & Evaluating RAG (free)", url:"https://www.deeplearning.ai/short-courses/building-evaluating-advanced-rag/"},
+          {type:"video", text:"James Briggs — Complete RAG tutorial", url:"https://www.youtube.com/watch?v=sVcwVQRHIc8"},
+          {type:"docs", text:"LangChain — RAG from scratch tutorial", url:"https://python.langchain.com/docs/tutorials/rag/"},
+          {type:"docs", text:"ChromaDB docs", url:"https://docs.trychroma.com/"},
+        ],
+        assessment: [
+          "Builds a RAG pipeline over a multi-document corpus with source citation",
+          "Experiments with chunk sizes and measures retrieval precision empirically",
+          "Implements hybrid search (keyword + semantic) and compares to semantic-only",
+          "Can explain why RAG is often preferred to fine-tuning for knowledge-grounding",
+        ]
+      },
+      {
+        id: "w14", title: "Milestone: RAG chatbot",
+        topics: [{l:"End-to-end RAG system with UI",t:"project"},{l:"Evaluation with RAGAS",t:"hands-on"},{l:"Deployment & cost estimation",t:"hands-on"}],
+        resources: [
+          {type:"docs", text:"RAGAS — RAG evaluation framework", url:"https://docs.ragas.io/en/stable/"},
+          {type:"video", text:"Prompt Engineering — Advanced RAG techniques", url:"https://www.youtube.com/watch?v=T-D1OfcDW1M"},
+          {type:"course", text:"DeepLearning.ai — LangChain for LLM Application Development", url:"https://www.deeplearning.ai/short-courses/langchain-for-llm-application-development/"},
+        ],
+        assessment: [
+          "Delivers a working chatbot that answers questions over a domain corpus with citations",
+          "RAGAS eval report shows faithfulness ≥0.75 and answer relevancy ≥0.70",
+          "System handles edge cases: out-of-scope questions, conflicting chunks, long documents",
+          "README documents architecture decisions, cost estimates, and known failure modes",
+        ],
+        milestone: { title: "Milestone: RAG chatbot", desc: "Choose a domain (e.g. company docs, research papers, a book). Ingest, chunk, embed, index. Build a chat interface with streaming responses and source citations. Run RAGAS evals. Deploy." }
+      },
+    ]
+  },
+  {
+    id: "p4", color: "var(--phase4)", name: "Phase 4 — AI agents", weeks: "Weeks 15–18",
+    weeks_data: [
+      {
+        id: "w15", title: "Agent architectures & reasoning patterns",
+        topics: [{l:"ReAct, Plan-and-Execute, Reflexion",t:"theory"},{l:"Chain-of-Thought & Tree-of-Thought",t:"theory"},{l:"Agentic loops & stopping conditions",t:"theory"},{l:"Build a toy ReAct agent from scratch",t:"hands-on"}],
+        resources: [
+          {type:"paper", text:"Yao et al. — ReAct: Synergizing Reasoning and Acting (2022)", url:"https://arxiv.org/abs/2210.03629"},
+          {type:"paper", text:"Wei et al. — Chain-of-Thought Prompting (2022)", url:"https://arxiv.org/abs/2201.11903"},
+          {type:"paper", text:"Shinn et al. — Reflexion (2023)", url:"https://arxiv.org/abs/2303.11366"},
+          {type:"video", text:"Andrew Ng — AI Agents in LangGraph (free course)", url:"https://www.deeplearning.ai/short-courses/ai-agents-in-langgraph/"},
+        ],
+        assessment: [
+          "Implements a ReAct agent loop (Thought → Action → Observation) without a framework",
+          "Compares CoT vs standard prompting on a multi-step reasoning benchmark",
+          "Identifies 3 failure modes in an agent trace and proposes mitigations",
+          "Can sketch the architecture of Plan-and-Execute vs ReAct and trade-offs",
+        ]
+      },
+      {
+        id: "w16", title: "Tool use & LangChain / LlamaIndex",
+        topics: [{l:"Tool schemas, function calling",t:"theory"},{l:"LangChain agents & chains deep dive",t:"hands-on"},{l:"LlamaIndex query engines",t:"hands-on"},{l:"Building custom tools",t:"hands-on"}],
+        resources: [
+          {type:"docs", text:"LangChain — Agents how-to", url:"https://python.langchain.com/docs/how_to/#agents"},
+          {type:"docs", text:"LlamaIndex — agents tutorial", url:"https://docs.llamaindex.ai/en/stable/use_cases/agents/"},
+          {type:"course", text:"DeepLearning.ai — Functions, Tools, Agents with LangChain", url:"https://www.deeplearning.ai/short-courses/functions-tools-agents-langchain/"},
+          {type:"video", text:"Sam Witteveen — LangChain agents series", url:"https://www.youtube.com/playlist?list=PL8motc6AQftn-X1HkaGG9KjmKtWImCKJS"},
+        ],
+        assessment: [
+          "Builds an agent with 4+ tools (web search, calculator, file I/O, custom API)",
+          "Understands internals: can trace an agent call and explain each framework call",
+          "Handles tool errors gracefully (retry, fallback, human escalation)",
+          "Compares LangChain vs LlamaIndex for a given use case and justifies the choice",
+        ]
+      },
+      {
+        id: "w17", title: "Memory systems & state management",
+        topics: [{l:"Conversation buffer & summary memory",t:"theory"},{l:"Entity memory & semantic memory",t:"theory"},{l:"External memory stores (vector, graph)",t:"hands-on"},{l:"LangGraph for stateful agents",t:"hands-on"}],
+        resources: [
+          {type:"paper", text:"Zhong et al. — MemoryBank: Enhancing LLMs with Long-Term Memory (2023)", url:"https://arxiv.org/abs/2305.10250"},
+          {type:"docs", text:"LangGraph — getting started", url:"https://langchain-ai.github.io/langgraph/tutorials/introduction/"},
+          {type:"course", text:"DeepLearning.ai — AI Agents in LangGraph", url:"https://www.deeplearning.ai/short-courses/ai-agents-in-langgraph/"},
+          {type:"video", text:"LangChain — LangGraph tutorials (YouTube)", url:"https://www.youtube.com/playlist?list=PLfaIDFEXuae16n2TWUkKq5PgJ0w6Pkwtg"},
+        ],
+        assessment: [
+          "Implements an agent that maintains a user profile across 10+ turn conversation",
+          "Builds a stateful graph with LangGraph: nodes, edges, conditional branching",
+          "Demonstrates memory retrieval: agent surfaces relevant context from a previous session",
+          "Analyses memory cost vs context window cost for a long-running task",
+        ]
+      },
+      {
+        id: "w18", title: "Milestone: autonomous agent",
+        topics: [{l:"Multi-agent systems: CrewAI / AutoGen",t:"hands-on"},{l:"Agent safety & guardrails",t:"theory"},{l:"PROJECT: research agent",t:"project"}],
+        resources: [
+          {type:"paper", text:"Park et al. — Generative Agents (2023)", url:"https://arxiv.org/abs/2304.03442"},
+          {type:"docs", text:"CrewAI docs", url:"https://docs.crewai.com/"},
+          {type:"docs", text:"AutoGen docs", url:"https://microsoft.github.io/autogen/"},
+          {type:"video", text:"AI Jason — Build a multi-agent system with CrewAI", url:"https://www.youtube.com/watch?v=sPzc6hMg7So"},
+        ],
+        assessment: [
+          "Delivers a multi-step research agent: given a topic, produces a structured brief with sources",
+          "Agent has at least 2 specialist sub-agents (researcher + summariser, or similar)",
+          "System has explicit stopping conditions and budget limits (cost, time, iterations)",
+          "Failure report documents 3 interesting failure cases and root causes",
+        ],
+        milestone: { title: "Milestone: autonomous research agent", desc: "Build a multi-agent system that takes a research question, searches the web, reads papers/articles, de-duplicates information, and synthesises a structured report with citations. Use CrewAI or LangGraph." }
+      },
+    ]
+  },
+  {
+    id: "p5", color: "var(--phase5)", name: "Phase 5 — Production & MLOps", weeks: "Weeks 19–22",
+    weeks_data: [
+      {
+        id: "w19", title: "Model serving & inference optimisation",
+        topics: [{l:"vLLM, TGI, llama.cpp",t:"hands-on"},{l:"Quantisation: GGUF, GPTQ, AWQ",t:"theory"},{l:"Batching, throughput vs latency",t:"theory"},{l:"Containerising with Docker",t:"hands-on"}],
+        resources: [
+          {type:"docs", text:"vLLM — quickstart", url:"https://docs.vllm.ai/en/latest/getting_started/quickstart.html"},
+          {type:"paper", text:"Kwon et al. — Efficient Memory Management with PagedAttention (vLLM)", url:"https://arxiv.org/abs/2309.06180"},
+          {type:"video", text:"Trelis Research — Quantization explained clearly", url:"https://www.youtube.com/watch?v=ZKdMbQq5T30"},
+          {type:"course", text:"DeepLearning.ai — Efficiently Serving LLMs (free)", url:"https://www.deeplearning.ai/short-courses/efficiently-serving-llms/"},
+        ],
+        assessment: [
+          "Serves a 7B model with vLLM and measures tokens/sec throughput",
+          "Compares 4-bit quantised model vs FP16: latency, memory, quality trade-offs",
+          "Packages the serving stack as a Docker image that cold-starts in <30s",
+          "Designs a serving architecture for 100 concurrent users with cost estimate",
+        ]
+      },
+      {
+        id: "w20", title: "Evals, benchmarks & quality assurance",
+        topics: [{l:"LLM-as-judge evaluation",t:"theory"},{l:"RAGAS, DeepEval, Promptfoo",t:"hands-on"},{l:"Regression testing for prompts",t:"hands-on"},{l:"Building custom eval datasets",t:"hands-on"}],
+        resources: [
+          {type:"paper", text:"Zheng et al. — Judging LLM-as-a-Judge with MT-Bench (2023)", url:"https://arxiv.org/abs/2306.05685"},
+          {type:"docs", text:"Promptfoo — LLM testing framework", url:"https://www.promptfoo.dev/docs/intro/"},
+          {type:"docs", text:"DeepEval — unit testing for LLMs", url:"https://docs.confident-ai.com/"},
+          {type:"course", text:"DeepLearning.ai — Evaluating & Debugging Generative AI", url:"https://www.deeplearning.ai/short-courses/evaluating-debugging-generative-ai/"},
+        ],
+        assessment: [
+          "Builds an eval suite of 50+ test cases covering happy path, edge cases, adversarial inputs",
+          "Implements LLM-as-judge with score rubric and validates against human ratings (≥0.8 correlation)",
+          "CI pipeline fails when any prompt regression exceeds a 5% score drop",
+          "Writes a 1-page eval strategy document for a production LLM system",
+        ]
+      },
+      {
+        id: "w21", title: "Observability, tracing & cost management",
+        topics: [{l:"LangSmith / Langfuse tracing",t:"hands-on"},{l:"Cost tracking & budget alerts",t:"hands-on"},{l:"Latency profiling & bottleneck analysis",t:"hands-on"},{l:"Error alerting & on-call runbooks",t:"theory"}],
+        resources: [
+          {type:"docs", text:"LangSmith docs", url:"https://docs.smith.langchain.com/"},
+          {type:"docs", text:"Langfuse docs (open source)", url:"https://langfuse.com/docs"},
+          {type:"video", text:"LangChain — Observability with LangSmith", url:"https://www.youtube.com/watch?v=DjOPnxCCwCo"},
+          {type:"book", text:"Chip Huyen — AI Engineering (O'Reilly) — Ch 11–12", url:"https://www.oreilly.com/library/view/ai-engineering/9781098166298/"},
+        ],
+        assessment: [
+          "Every LLM call in a pipeline is traced with input, output, token count, latency, and cost",
+          "Cost dashboard shows spend by model, feature, and user segment",
+          "Runbook written for 3 common production failure scenarios (timeout, rate limit, hallucination spike)",
+          "Latency p50/p95/p99 tracked and plotted over time",
+        ]
+      },
+      {
+        id: "w22", title: "Milestone: production LLM service",
+        topics: [{l:"Prompt injection & security",t:"theory"},{l:"PII handling & output filtering",t:"hands-on"},{l:"PROJECT: production-grade LLM API",t:"project"}],
+        resources: [
+          {type:"paper", text:"Greshake et al. — Indirect Prompt Injection (2023)", url:"https://arxiv.org/abs/2302.12173"},
+          {type:"docs", text:"NeMo Guardrails — Nvidia", url:"https://github.com/NVIDIA/NeMo-Guardrails"},
+          {type:"docs", text:"Guardrails AI docs", url:"https://www.guardrailsai.com/docs"},
+          {type:"video", text:"Simon Willison — Prompt injection security (talk)", url:"https://www.youtube.com/watch?v=rfln-9dFCWA"},
+        ],
+        assessment: [
+          "Production service passes a prompt injection test suite with 0 critical failures",
+          "PII is detected and redacted before storage; audit log shows all redactions",
+          "Full observability: traces in Langfuse, cost dashboard, error alerting via Slack/email",
+          "Load test: service handles 50 req/s with p95 latency <2s",
+        ],
+        milestone: { title: "Milestone: production LLM API", desc: "Take a previous project (RAG chatbot or agent) and production-harden it: containerise, add tracing, cost guardrails, input/output filtering, rate limiting, and load testing. Document an on-call runbook." }
+      },
+    ]
+  },
+  {
+    id: "p6", color: "var(--phase6)", name: "Phase 6 — Capstone & specialisation", weeks: "Weeks 23–26",
+    weeks_data: [
+      {
+        id: "w23", title: "Specialisation: choose your track",
+        topics: [{l:"Track A: multimodal AI (vision + language)",t:"theory"},{l:"Track B: code generation & AI-assisted dev",t:"theory"},{l:"Track C: domain-specific fine-tuning",t:"theory"},{l:"Deep-dive on chosen track",t:"hands-on"}],
+        resources: [
+          {type:"paper", text:"Track A — OpenAI — GPT-4V System Card", url:"https://cdn.openai.com/papers/GPTV_System_Card.pdf"},
+          {type:"paper", text:"Track B — Chen et al. — Evaluating LLMs on HumanEval (Codex)", url:"https://arxiv.org/abs/2107.03374"},
+          {type:"video", text:"Track C — Sebastian Raschka — Domain Adaptation tutorial", url:"https://www.youtube.com/watch?v=iERxSOwImgc"},
+          {type:"course", text:"DeepLearning.ai — Specialisation short courses (browse by track)", url:"https://www.deeplearning.ai/short-courses/"},
+        ],
+        assessment: [
+          "Reads and presents 2 papers in the chosen specialisation track",
+          "Produces a short written summary of the current state-of-the-art in the track",
+          "Defines a capstone project scope that uses the specialisation track",
+          "Identifies 3 open problems in the track and proposes an experiment for one",
+        ]
+      },
+      {
+        id: "w24", title: "System design for AI products",
+        topics: [{l:"Architecture patterns for LLM systems",t:"theory"},{l:"Cost modelling & ROI analysis",t:"theory"},{l:"On-prem vs cloud vs hybrid",t:"theory"},{l:"AI product design: latency, quality, cost triangle",t:"theory"}],
+        resources: [
+          {type:"book", text:"Chip Huyen — AI Engineering (O'Reilly) — full book", url:"https://www.oreilly.com/library/view/ai-engineering/9781098166298/"},
+          {type:"video", text:"Eugene Yan — Practical LLM system design (MLOps Community talk)", url:"https://www.youtube.com/watch?v=grgLzWm3HrY"},
+          {type:"paper", text:"Bommasani et al. — On the Opportunities of Foundation Models (2022)", url:"https://arxiv.org/abs/2108.07258"},
+        ],
+        assessment: [
+          "Designs a complete system architecture diagram for a production AI product (new or improved)",
+          "Produces a cost model: API costs, compute, storage, at 100 / 1k / 10k daily users",
+          "Justifies build-vs-buy decisions for each component with reasoning",
+          "Presents the design in a 20-minute mock design review with Q&A",
+        ]
+      },
+      {
+        id: "w25", title: "Capstone build sprint",
+        topics: [{l:"Build capstone project core features",t:"project"},{l:"Implement evals & observability",t:"hands-on"},{l:"Write technical design doc",t:"hands-on"}],
+        resources: [
+          {type:"docs", text:"Hugging Face Spaces — deployment", url:"https://huggingface.co/docs/hub/spaces"},
+          {type:"docs", text:"Render / Railway — easy deployment platforms", url:"https://railway.app/"},
+        ],
+        assessment: [
+          "Core features functional and tested with an eval suite",
+          "Technical design document covers: problem, solution, architecture, trade-offs, known limits",
+          "All code in a GitHub repo with CI that runs evals on each push",
+          "Cost and latency targets defined and met",
+        ]
+      },
+      {
+        id: "w26", title: "Capstone: demo day & retrospective",
+        topics: [{l:"Capstone project polish & deployment",t:"project"},{l:"Demo day presentation",t:"project"},{l:"Learning retrospective",t:"theory"}],
+        resources: [
+          {type:"book", text:"The Pragmatic Programmer — career chapter", url:"https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/"},
+        ],
+        assessment: [
+          "Live demo of deployed capstone project — handles at least 3 demo scenarios without failure",
+          "15-minute presentation: problem, approach, results, learnings, what-I-would-do-differently",
+          "Written retrospective: top 5 things learned, top 3 things that were harder than expected",
+          "Portfolio updated on GitHub/LinkedIn with all 6 project milestones",
+        ],
+        milestone: { title: "Milestone: capstone project demo day", desc: "Present your end-to-end AI product. Covers: problem definition, dataset/data pipeline, model/agent architecture, eval results, production deployment, cost model, and demo. Publish to GitHub + LinkedIn." }
+      },
+    ]
+  },
+];
+
+/* ─── State ─── */
+const STORAGE_KEY = "ml-curriculum-progress-v2";
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch { return {}; }
+}
+function saveState(s) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {}
+}
+let state = loadState();
+
+/* ─── Render ─── */
+function getPhaseProgress(phase) {
+  const total = phase.weeks_data.length;
+  const done = phase.weeks_data.filter(w => state["week_"+w.id]).length;
+  return { done, total, pct: total ? Math.round(done/total*100) : 0 };
+}
+function getTotalProgress() {
+  let total = 0, done = 0;
+  CURRICULUM.forEach(p => { const pp = getPhaseProgress(p); total += pp.total; done += pp.done; });
+  return { done, total, pct: total ? Math.round(done/total*100) : 0 };
+}
+
+function renderOverview() {
+  const container = document.getElementById("ov-phases");
+  container.innerHTML = "";
+  CURRICULUM.forEach((p, i) => {
+    const pp = getPhaseProgress(p);
+    const div = document.createElement("div");
+    div.className = "ov-phase";
+    div.innerHTML = `
+      <div class="ov-bar-track"><div class="ov-bar-fill" style="background:${p.color};width:${pp.pct}%"></div></div>
+      <div class="ov-bar-label">P${i+1} ${pp.done}/${pp.total}</div>
+    `;
+    container.appendChild(div);
+  });
+  const tp = getTotalProgress();
+  document.getElementById("total-fill").style.width = tp.pct + "%";
+  document.getElementById("total-pct").textContent = tp.pct + "%";
+  document.getElementById("completed-count").textContent = tp.done;
+}
+
+function toggleWeekDone(weekId, e) {
+  e.stopPropagation();
+  const key = "week_" + weekId;
+  state[key] = !state[key];
+  saveState(state);
+  const el = document.getElementById("wcheck-" + weekId);
+  el.classList.toggle("done", !!state[key]);
+  el.textContent = state[key] ? "✓" : "";
+  renderOverview();
+  // Update phase progress label
+  const ph = CURRICULUM.find(p => p.weeks_data.some(w => w.id === weekId));
+  if (ph) {
+    const pp = getPhaseProgress(ph);
+    const lbl = document.getElementById("pprog-" + ph.id);
+    if (lbl) lbl.textContent = pp.done + "/" + pp.total + " weeks";
+  }
+}
+
+function toggleCriterion(key, el) {
+  state[key] = !state[key];
+  saveState(state);
+  el.classList.toggle("done", !!state[key]);
+  el.textContent = state[key] ? "✓" : "";
+}
+
+function toggleExpand(id, type) {
+  const body = document.getElementById(type + "-body-" + id);
+  const chev = document.getElementById(type + "-chev-" + id);
+  const isOpen = body.classList.contains("open");
+  body.classList.toggle("open", !isOpen);
+  if (chev) chev.classList.toggle("open", !isOpen);
+}
+
+function renderCurriculum() {
+  const root = document.getElementById("curriculum");
+  CURRICULUM.forEach(phase => {
+    const pp = getPhaseProgress(phase);
+    const phaseEl = document.createElement("div");
+    phaseEl.className = "phase";
+
+    phaseEl.innerHTML = `
+      <div class="phase-header" onclick="toggleExpand('${phase.id}','phase')">
+        <div class="phase-pip" style="background:${phase.color}"></div>
+        <div class="phase-info">
+          <div class="phase-name">${phase.name}</div>
+          <div class="phase-meta">${phase.weeks}</div>
+        </div>
+        <div class="phase-prog" id="pprog-${phase.id}">${pp.done}/${pp.total} weeks</div>
+        <div class="phase-chevron" id="phase-chev-${phase.id}">›</div>
+      </div>
+      <div class="phase-body" id="phase-body-${phase.id}">
+        ${phase.weeks_data.map(week => renderWeek(week, phase.color)).join("")}
+      </div>
+    `;
+    root.appendChild(phaseEl);
+  });
+}
+
+function renderWeek(week, phaseColor) {
+  const isDone = !!state["week_" + week.id];
+  const topicsHtml = week.topics.map(t => `<span class="topic ${t.t}">${t.l}</span>`).join("");
+  const resourcesHtml = week.resources.map(r =>
+    `<li><span class="res-type ${r.type}">${r.type}</span><span><a href="${r.url}" target="_blank" rel="noopener">${r.text}</a></span></li>`
+  ).join("");
+  const criteriaHtml = week.assessment.map((c, i) => {
+    const key = "crit_" + week.id + "_" + i;
+    const done = !!state[key];
+    return `<div class="criterion">
+      <div class="criterion-check${done?" done":""}" id="${key}-el" onclick="toggleCriterion('${key}', this)">${done?"✓":""}</div>
+      <span>${c}</span>
+    </div>`;
+  }).join("");
+  const milestoneHtml = week.milestone ? `
+    <div class="milestone-banner">
+      <div class="milestone-icon">🏁</div>
+      <div class="milestone-text">
+        <div class="milestone-title">${week.milestone.title}</div>
+        <div class="milestone-desc">${week.milestone.desc}</div>
+      </div>
+    </div>` : "";
+
+  return `
+    <div class="week" id="week-${week.id}">
+      <div class="week-header" onclick="toggleExpand('${week.id}','week')">
+        <span class="week-num">${week.id.replace("w","Week ")}</span>
+        <span class="week-title">${week.title}</span>
+        <div class="week-check${isDone?" done":""}" id="wcheck-${week.id}" onclick="toggleWeekDone('${week.id}',event)">${isDone?"✓":""}</div>
+        <span class="week-chevron" id="week-chev-${week.id}">›</span>
+      </div>
+      <div class="week-body" id="week-body-${week.id}">
+        <div class="section-label">Topics this week</div>
+        <div class="topics">${topicsHtml}</div>
+
+        <div class="section-label">Resources</div>
+        <ul class="resource-list">${resourcesHtml}</ul>
+
+        <div class="assessment-box">
+          <div class="section-label">Assessment criteria</div>
+          <div class="criteria">${criteriaHtml}</div>
+        </div>
+        ${milestoneHtml}
+      </div>
+    </div>
+  `;
+}
+
+renderCurriculum();
+renderOverview();
+
+// Open Phase 1 by default
+toggleExpand("p1", "phase");
+</script>
+</body>
+</html>
