@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 11 — LLM APIs & Prompt Engineering"
+permalink: /notes/phase-3-transformers-llms/week-11-llm-apis-and-prompt-engineering/
+parent_phase: "Phase 3 — Transformers & LLMs"
+nav_order: 3
+---
+
 # Week 11 — LLM APIs & Prompt Engineering
 
 **Status:** 🔲 Not started  

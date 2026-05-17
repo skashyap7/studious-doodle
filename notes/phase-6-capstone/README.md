@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Phase 6 — Capstone & Specialisation"
+permalink: /notes/phase-6-capstone/README/
+parent_phase: "Phase 6 — Capstone & Specialisation"
+nav_order: 6
+---
+
 # Phase 6 — Capstone & Specialisation
 
 **Weeks 23–26** · Specialisation track deep-dive, system design, and your capstone project demo.

@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 23 — Specialisation — Choose Your Track"
+permalink: /notes/phase-6-capstone/week-23-specialisation--choose-your-track/
+parent_phase: "Phase 6 — Capstone & Specialisation"
+nav_order: 6
+---
+
 # Week 23 — Specialisation — Choose Your Track
 
 **Status:** 🔲 Not started  

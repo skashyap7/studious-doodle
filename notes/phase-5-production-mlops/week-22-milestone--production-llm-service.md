@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 22 — Milestone — Production LLM Service"
+permalink: /notes/phase-5-production-mlops/week-22-milestone--production-llm-service/
+parent_phase: "Phase 5 — Production & MLOps"
+nav_order: 5
+---
+
 # Week 22 — Milestone — Production LLM Service
 
 **Status:** 🔲 Not started  

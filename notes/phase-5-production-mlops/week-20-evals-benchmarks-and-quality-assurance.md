@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 20 — Evals, Benchmarks & Quality Assurance"
+permalink: /notes/phase-5-production-mlops/week-20-evals-benchmarks-and-quality-assurance/
+parent_phase: "Phase 5 — Production & MLOps"
+nav_order: 5
+---
+
 # Week 20 — Evals, Benchmarks & Quality Assurance
 
 **Status:** 🔲 Not started  

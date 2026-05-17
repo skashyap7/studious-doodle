@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 26 — Capstone — Demo Day & Retrospective"
+permalink: /notes/phase-6-capstone/week-26-capstone--demo-day-and-retrospective/
+parent_phase: "Phase 6 — Capstone & Specialisation"
+nav_order: 6
+---
+
 # Week 26 — Capstone — Demo Day & Retrospective
 
 **Status:** 🔲 Not started  

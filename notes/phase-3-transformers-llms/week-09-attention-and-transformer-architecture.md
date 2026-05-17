@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 9 — Attention & Transformer Architecture"
+permalink: /notes/phase-3-transformers-llms/week-09-attention-and-transformer-architecture/
+parent_phase: "Phase 3 — Transformers & LLMs"
+nav_order: 3
+---
+
 # Week 9 — Attention & Transformer Architecture
 
 **Status:** 🔲 Not started  

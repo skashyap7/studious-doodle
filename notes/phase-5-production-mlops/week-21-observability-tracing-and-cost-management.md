@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 21 — Observability, Tracing & Cost Management"
+permalink: /notes/phase-5-production-mlops/week-21-observability-tracing-and-cost-management/
+parent_phase: "Phase 5 — Production & MLOps"
+nav_order: 5
+---
+
 # Week 21 — Observability, Tracing & Cost Management
 
 **Status:** 🔲 Not started  

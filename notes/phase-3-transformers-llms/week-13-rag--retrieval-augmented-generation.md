@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 13 — RAG — Retrieval-Augmented Generation"
+permalink: /notes/phase-3-transformers-llms/week-13-rag--retrieval-augmented-generation/
+parent_phase: "Phase 3 — Transformers & LLMs"
+nav_order: 3
+---
+
 # Week 13 — RAG — Retrieval-Augmented Generation
 
 **Status:** 🔲 Not started  

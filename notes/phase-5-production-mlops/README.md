@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Phase 5 — Production & MLOps"
+permalink: /notes/phase-5-production-mlops/README/
+parent_phase: "Phase 5 — Production & MLOps"
+nav_order: 5
+---
+
 # Phase 5 — Production & MLOps
 
 **Weeks 19–22** · Model serving, quantisation, evals, observability, cost management, and security.

@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 19 — Model Serving & Inference Optimisation"
+permalink: /notes/phase-5-production-mlops/week-19-model-serving-and-inference-optimisation/
+parent_phase: "Phase 5 — Production & MLOps"
+nav_order: 5
+---
+
 # Week 19 — Model Serving & Inference Optimisation
 
 **Status:** 🔲 Not started  

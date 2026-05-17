@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Phase 2 — Deep Learning"
+permalink: /notes/phase-2-deep-learning/README/
+parent_phase: "Phase 2 — Deep Learning"
+nav_order: 2
+---
+
 # Phase 2 — Deep Learning
 
 **Weeks 5–8** · Neural networks, PyTorch, CNNs, transfer learning, and building your first vision app.

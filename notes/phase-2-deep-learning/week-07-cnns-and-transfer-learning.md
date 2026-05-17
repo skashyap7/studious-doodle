@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 7 — CNNs & Transfer Learning"
+permalink: /notes/phase-2-deep-learning/week-07-cnns-and-transfer-learning/
+parent_phase: "Phase 2 — Deep Learning"
+nav_order: 2
+---
+
 # Week 7 — CNNs & Transfer Learning
 
 **Status:** 🔲 Not started  

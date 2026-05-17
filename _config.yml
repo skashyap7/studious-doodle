@@ -1,0 +1,25 @@
+title: "ML · AI · LLMs — Study Notes"
+description: "Personal learning journal for the 26-week ML, AI Agents & LLMs curriculum."
+url: "https://skashyap7.github.io"
+baseurl: "/studious-doodle"
+author: skashyap7
+
+theme: minima
+minima:
+  skin: dark
+
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+permalink: pretty
+
+# Show notes in navigation
+header_pages:
+  - notes/index.md
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag

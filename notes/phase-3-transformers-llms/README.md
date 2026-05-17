@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Phase 3 — Transformers & LLMs"
+permalink: /notes/phase-3-transformers-llms/README/
+parent_phase: "Phase 3 — Transformers & LLMs"
+nav_order: 3
+---
+
 # Phase 3 — Transformers & LLMs
 
 **Weeks 9–14** · Attention mechanisms, tokenisation, LLM APIs, fine-tuning, RAG, and building a chatbot.

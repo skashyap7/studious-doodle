@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 5 — Neural Network Fundamentals"
+permalink: /notes/phase-2-deep-learning/week-05-neural-network-fundamentals/
+parent_phase: "Phase 2 — Deep Learning"
+nav_order: 2
+---
+
 # Week 5 — Neural Network Fundamentals
 
 **Status:** 🔲 Not started  

@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 24 — System Design for AI Products"
+permalink: /notes/phase-6-capstone/week-24-system-design-for-ai-products/
+parent_phase: "Phase 6 — Capstone & Specialisation"
+nav_order: 6
+---
+
 # Week 24 — System Design for AI Products
 
 **Status:** 🔲 Not started  

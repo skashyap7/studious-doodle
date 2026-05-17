@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 10 — Tokenisation, Embeddings & Context Windows"
+permalink: /notes/phase-3-transformers-llms/week-10-tokenisation-embeddings-and-context-windows/
+parent_phase: "Phase 3 — Transformers & LLMs"
+nav_order: 3
+---
+
 # Week 10 — Tokenisation, Embeddings & Context Windows
 
 **Status:** 🔲 Not started  

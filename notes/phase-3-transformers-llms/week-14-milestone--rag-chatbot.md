@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 14 — Milestone — RAG Chatbot"
+permalink: /notes/phase-3-transformers-llms/week-14-milestone--rag-chatbot/
+parent_phase: "Phase 3 — Transformers & LLMs"
+nav_order: 3
+---
+
 # Week 14 — Milestone — RAG Chatbot
 
 **Status:** 🔲 Not started  

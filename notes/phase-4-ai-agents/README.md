@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Phase 4 — AI Agents"
+permalink: /notes/phase-4-ai-agents/README/
+parent_phase: "Phase 4 — AI Agents"
+nav_order: 4
+---
+
 # Phase 4 — AI Agents
 
 **Weeks 15–18** · Agent architectures, ReAct, tool use, LangChain/LlamaIndex, memory, and multi-agent systems.

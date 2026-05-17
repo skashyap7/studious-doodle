@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 12 — Fine-tuning & LoRA / QLoRA"
+permalink: /notes/phase-3-transformers-llms/week-12-fine-tuning-and-lora---qlora/
+parent_phase: "Phase 3 — Transformers & LLMs"
+nav_order: 3
+---
+
 # Week 12 — Fine-tuning & LoRA / QLoRA
 
 **Status:** 🔲 Not started  

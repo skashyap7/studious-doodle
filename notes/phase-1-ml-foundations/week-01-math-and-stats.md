@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 1 — Math & Statistics for ML"
+permalink: /notes/phase-1-ml-foundations/week-01-math-and-stats/
+parent_phase: "Phase 1 — ML Foundations"
+nav_order: 1
+---
+
 # Week 1 — Math & Statistics for ML
 
 **Status:** 🔲 Not started  

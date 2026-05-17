@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 15 — Agent Architectures & Reasoning Patterns"
+permalink: /notes/phase-4-ai-agents/week-15-agent-architectures-and-reasoning-patterns/
+parent_phase: "Phase 4 — AI Agents"
+nav_order: 4
+---
+
 # Week 15 — Agent Architectures & Reasoning Patterns
 
 **Status:** 🔲 Not started  

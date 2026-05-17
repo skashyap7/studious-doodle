@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 16 — Tool Use & LangChain / LlamaIndex"
+permalink: /notes/phase-4-ai-agents/week-16-tool-use-and-langchain---llamaindex/
+parent_phase: "Phase 4 — AI Agents"
+nav_order: 4
+---
+
 # Week 16 — Tool Use & LangChain / LlamaIndex
 
 **Status:** 🔲 Not started  

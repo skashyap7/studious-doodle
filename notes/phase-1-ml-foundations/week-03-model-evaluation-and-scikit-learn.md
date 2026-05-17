@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 3 — Model Evaluation & Scikit-learn"
+permalink: /notes/phase-1-ml-foundations/week-03-model-evaluation-and-scikit-learn/
+parent_phase: "Phase 1 — ML Foundations"
+nav_order: 1
+---
+
 # Week 3 — Model Evaluation & Scikit-learn
 
 **Status:** 🔲 Not started  

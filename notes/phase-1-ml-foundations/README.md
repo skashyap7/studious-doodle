@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Phase 1 — ML Foundations"
+permalink: /notes/phase-1-ml-foundations/README/
+parent_phase: "Phase 1 — ML Foundations"
+nav_order: 1
+---
+
 # Phase 1 — ML Foundations
 
 **Weeks 1–4** · Core machine learning concepts, statistics, scikit-learn, and your first deployed model.

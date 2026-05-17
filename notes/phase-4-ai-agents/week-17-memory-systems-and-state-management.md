@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 17 — Memory Systems & State Management"
+permalink: /notes/phase-4-ai-agents/week-17-memory-systems-and-state-management/
+parent_phase: "Phase 4 — AI Agents"
+nav_order: 4
+---
+
 # Week 17 — Memory Systems & State Management
 
 **Status:** 🔲 Not started  

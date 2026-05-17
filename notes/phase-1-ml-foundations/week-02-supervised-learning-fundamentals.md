@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 2 — Supervised Learning Fundamentals"
+permalink: /notes/phase-1-ml-foundations/week-02-supervised-learning-fundamentals/
+parent_phase: "Phase 1 — ML Foundations"
+nav_order: 1
+---
+
 # Week 2 — Supervised Learning Fundamentals
 
 **Status:** 🔲 Not started  

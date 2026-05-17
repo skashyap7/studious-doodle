@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 4 — Milestone — End-to-end ML Pipeline"
+permalink: /notes/phase-1-ml-foundations/week-04-milestone--end-to-end-ml-pipeline/
+parent_phase: "Phase 1 — ML Foundations"
+nav_order: 1
+---
+
 # Week 4 — Milestone — End-to-end ML Pipeline
 
 **Status:** 🔲 Not started  

@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 18 — Milestone — Autonomous Research Agent"
+permalink: /notes/phase-4-ai-agents/week-18-milestone--autonomous-research-agent/
+parent_phase: "Phase 4 — AI Agents"
+nav_order: 4
+---
+
 # Week 18 — Milestone — Autonomous Research Agent
 
 **Status:** 🔲 Not started  

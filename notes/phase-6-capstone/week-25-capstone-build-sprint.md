@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Week 25 — Capstone Build Sprint"
+permalink: /notes/phase-6-capstone/week-25-capstone-build-sprint/
+parent_phase: "Phase 6 — Capstone & Specialisation"
+nav_order: 6
+---
+
 # Week 25 — Capstone Build Sprint
 
 **Status:** 🔲 Not started  
